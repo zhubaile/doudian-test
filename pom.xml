@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.jinritemai.cloud</groupId>
+        <artifactId>base-parent</artifactId>
+        <version>0.1.7-RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jinritemai.cloud</groupId>
+    <artifactId>demo-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>demo-parent</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <mvn-compiler-plugin.version>3.7.0</mvn-compiler-plugin.version>
+        <mvn-resources-plugin.version>3.0.2</mvn-resources-plugin.version>
+        <mvn-surefire-plugin.version>2.21.0</mvn-surefire-plugin.version>
+        <mvn-jar-plugin.version>2.4</mvn-jar-plugin.version>
+        <spring-boot-starter-data-redis.version>2.1.0.RELEASE</spring-boot-starter-data-redis.version>
+        <spring-boot-maven-plugin.version>2.1.0.RELEASE</spring-boot-maven-plugin.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <javax.servelet-api.version>3.1.0</javax.servelet-api.version>
+        <jieba.version>1.0.2</jieba.version>
+        <reflections.version>0.10.2</reflections.version>
+    </properties>
+
+    <modules>
+        <module>demo-deploy</module>
+        <module>doudianyun-common</module>
+        <module>doudianyun-db-common</module>
+        <module>doudianyun-service</module>
+        <module>doudianyun-consumer</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <configuration>
+                        <mainClass>demo.deploy.DemoApplication</mainClass>
+                        <includeSystemScope>true</includeSystemScope>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

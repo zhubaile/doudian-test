@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.loveapp.doudianyun.db.common.mapper.ItemDetectionListMapper">
+
+    <resultMap type="cn.loveapp.doudianyun.db.common.entity.ItemDetectionList" id="ItemDetectionListMapper">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="nick" column="nick" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="cid" column="cid" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="productId" column="product_id" jdbcType="VARCHAR"/>
+        <result property="img" column="img" jdbcType="VARCHAR"/>
+        <result property="productType" column="product_type" jdbcType="INTEGER"/>
+        <result property="checkStatus" column="check_status" jdbcType="INTEGER"/>
+        <result property="titleType" column="title_type" jdbcType="INTEGER"/>
+        <result property="detectionResult" column="detection_result" jdbcType="LONGVARCHAR"/>
+        <result property="externalData" column="external_data" jdbcType="VARCHAR"/>
+        <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
+        <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getDetectionList" resultMap="ItemDetectionListMapper">
+        SELECT * FROM item_detection_list
+        <where>
+            AND user_id=#{params.userId} AND gmt_modified>#{params.gmtModified}
+            <if test="params.status != null">
+                AND status=#{params.status}
+            </if>
+            <if test="params.titleType != null and params.titleType != ''">
+                AND title_type=#{params.titleType}
+            </if>
+            <if test="params.checkStatus != null and params.checkStatus != ''">
+                AND check_status = #{params.checkStatus}
+            </if>
+            <if test="params.cid != null and params.cid != ''">
+                AND cid = #{params.cid}
+            </if>
+            ORDER BY `update_time` DESC LIMIT #{begin}, #{size}
+        </where>
+    </select>
+
+    <select id="getDetectionListTotal" resultType="java.lang.Integer">
+        SELECT count(*) as total FROM item_detection_list
+        <where>
+            AND user_id=#{userId} AND gmt_modified>#{gmtModified}
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="titleType != null and titleType != ''">
+                AND title_type=#{titleType}
+            </if>
+            <if test="checkStatus != null and checkStatus != ''">
+                AND check_status = #{checkStatus}
+            </if>
+            <if test="cid != null and cid != ''">
+                AND cid = #{cid}
+            </if>
+        </where>
+    </select>
+
+    <select id="getIsHasItem" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM item_detection_list
+        WHERE user_id=#{userId} AND product_id=#{productId}
+    </select>
+
+    <insert id="interDetectionList" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO item_detection_list (nick, user_id, status, cid, title, product_id, img, product_type, check_status, title_type, detection_result, external_data, gmt_create, gmt_modified, update_time)
+        VALUES (#{nick}, #{userId}, #{status}, #{cid}, #{title}, #{productId}, #{img}, #{productType}, #{checkStatus}, #{titleType}, #{detectionResult}, #{externalData}, #{gmtCreate}, #{gmtModified}, #{updateTime});
+    </insert>
+
+    <update id="updateDetectionList">
+        UPDATE item_detection_list
+        <set>
+            status=#{status}, cid=#{cid}, title=#{title}, img=#{img}, product_type=#{productType}, check_status=#{checkStatus}, title_type=#{titleType}, detection_result=#{detectionResult},
+            external_data=#{externalData}, gmt_modified=#{gmtModified}, update_time=#{updateTime}
+        </set>
+        <where>
+            user_id=#{userId} AND product_id=#{productId}
+        </where>
+    </update>
+</mapper>
